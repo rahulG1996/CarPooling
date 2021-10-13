@@ -1,10 +1,13 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
-const SectionHeader = ({title}) => {
+const SectionHeader = ({title, showAstric}) => {
   return (
     <View>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>
+        {title}
+        {showAstric ? <Text style={{color: 'red'}}>*</Text> : null}
+      </Text>
     </View>
   );
 };
