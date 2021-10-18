@@ -9,7 +9,7 @@ const CustomTextInput = ({
   value,
   showEyes = false,
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(!showEyes);
   return (
     <View style={styles.container}>
       <TextInput

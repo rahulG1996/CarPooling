@@ -8,10 +8,14 @@ import {
   SectionHeader,
   CustomTextInput,
   CustomButton,
+  OtpModal,
 } from '../../../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Styles} from '../../../utils/style';
 import {colors} from '../../../utils/colors';
+import PhoneInput from 'react-native-phone-number-input';
+import CheckBox from 'react-native-check-box';
+
 function Login(props) {
   const [state, setState] = useState({
     headingTabData: [
@@ -34,6 +38,7 @@ function Login(props) {
       {type: 'Female', isSelected: false},
     ],
     userTypeSelected: "I'm a passanger",
+    showOtpModal: false,
   });
 
   const hnadleTabBar = value => {
@@ -98,9 +103,16 @@ function Login(props) {
           showEyes={true}
         />
         <View style={styles.sendOtpContainer}>
-          <TouchableOpacity>
-            <Text style={{color: colors.blue}}>Remember Me</Text>
-          </TouchableOpacity>
+          <CheckBox
+            style={{flex: 1, padding: 10}}
+            onClick={() => {
+              setState({...state, isChecked: !state.isChecked});
+            }}
+            isChecked={state.isChecked}
+            rightText={'Remember Me'}
+            rightTextStyle={{color: colors.blue}}
+            checkBoxColor={colors.blue}
+          />
           <TouchableOpacity
             onPress={() => props.navigation.navigate('ForgotPassword')}>
             <Text style={styles.resendText}>Forgot Password?</Text>
@@ -186,15 +198,17 @@ function Login(props) {
           placeholder=""
           onChangeText={e => setState({...state, fName: e})}
           value={state.fName}
+          showEyes={false}
         />
         <SectionHeader title="Last Name" />
         <CustomTextInput
           placeholder=""
           onChangeText={e => setState({...state, lName: e})}
           value={state.lName}
+          showEyes={false}
         />
-        <SectionHeader title="Choose a user" showAstric />
-        <View style={styles.container}>
+        <SectionHeader title="Gender" showAstric />
+        <View style={[styles.container, {marginBottom: 10}]}>
           {state.gender.map(item => {
             return (
               <TouchableOpacity
@@ -211,6 +225,41 @@ function Login(props) {
             );
           })}
         </View>
+        <PhoneInput
+          placeholder={'Enter Mobile Number'}
+          defaultCode="IN"
+          containerStyle={{
+            backgroundColor: 'white',
+            borderBottomWidth: 1,
+            height: 50,
+            borderBottomColor: '#e2e2e2',
+            marginBottom: 20,
+          }}
+          textContainerStyle={{
+            backgroundColor: 'white',
+            borderLeftWidth: 1,
+            borderLeftColor: '#e2e2e2',
+          }}
+          layout="second"
+          textInputProps={{
+            maxLength: 10,
+            color: 'black',
+            height: 50,
+          }}
+          // disableArrowIcon={true}
+          onChangeFormattedText={text => {
+            setState({...state, phonenumber: text});
+          }}
+          // autoFocus
+        />
+        <View style={{alignItems: 'flex-end'}}>
+          <TouchableOpacity
+            style={styles.otpBtn}
+            onPress={() => setState({...state, showOtpModal: true})}>
+            <Text style={styles.sendText}>Verify</Text>
+          </TouchableOpacity>
+        </View>
+
         <SectionHeader title="Email Address" showAstric />
         <CustomTextInput
           placeholder="Email"
@@ -236,16 +285,14 @@ function Login(props) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={Styles.container}>
       <NoAuthHeader />
       <View style={{flex: 1}}>
         <CustomHeadingTabBar
           data={state.headingTabData}
           hnadleTabBar={hnadleTabBar}
         />
-        <KeyboardAwareScrollView
-          contentContainerStyle={{margin: 20}}
-          keyboardShouldPersistTaps="handled">
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
           <View style={Styles.box}>
             {state.activeTab === 'Log In'
               ? !state.isEmailLogin
@@ -267,11 +314,22 @@ function Login(props) {
                 </View>
               </>
             ) : (
-              <CustomButton title="Register" />
+              <CustomButton
+                title="Register"
+                onPress={() =>
+                  props.navigation.navigate('SuccessRegistrationPage')
+                }
+              />
             )}
           </View>
         </KeyboardAwareScrollView>
       </View>
+      {state.showOtpModal ? (
+        <OtpModal
+          showOtpModal={state.showOtpModal}
+          handleModal={() => setState({...state, showOtpModal: false})}
+        />
+      ) : null}
     </View>
   );
 }
@@ -313,13 +371,14 @@ const styles = StyleSheet.create({
     height: 10,
     borderWidth: 1,
     borderRadius: 5,
+    marginRight: 10,
   },
   userTypeConatiner: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     width: '50%',
     marginVertical: 10,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     flexDirection: 'row',

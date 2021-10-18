@@ -26,6 +26,7 @@ function UpdatePassword(props) {
     headingTabData: [{title: 'Update Password', isActive: true}],
     password: '',
     cPassword: '',
+    isPasswordUpdated: false,
   });
 
   const renderEmailLoginForm = () => {
@@ -50,26 +51,50 @@ function UpdatePassword(props) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={Styles.container}>
       <NoAuthHeader />
       <View style={{flex: 1}}>
         <CustomHeadingTabBar data={state.headingTabData} />
-        <KeyboardAwareScrollView
-          contentContainerStyle={{margin: 20}}
-          keyboardShouldPersistTaps="handled">
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
           <View style={Styles.box}>
-            {renderEmailLoginForm()}
-            <CustomButton
-              title="Update"
-              onPress={() =>
-                props.navigation.dispatch(
-                  CommonActions.reset({
-                    index: 1,
-                    routes: [{name: 'Login'}],
-                  }),
-                )
-              }
-            />
+            {state.isPasswordUpdated ? (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}>
+                  <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                    Password Updated{' '}
+                  </Text>
+                  <View style={{paddingVertical: 20}}>
+                    <Image
+                      source={require('../../../assets/images/success.png')}
+                    />
+                  </View>
+
+                  <Text style={styles.text}>
+                    New password has been updated!
+                  </Text>
+                </View>
+                <CustomButton
+                  title="Done"
+                  onPress={() => {
+                    setState({...state, isPasswordUpdated: false});
+                    props.navigation.navigate('Login');
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                {renderEmailLoginForm()}
+                <CustomButton
+                  title="Update"
+                  onPress={() => setState({...state, isPasswordUpdated: true})}
+                />
+              </>
+            )}
           </View>
         </KeyboardAwareScrollView>
       </View>
@@ -107,6 +132,11 @@ const styles = StyleSheet.create({
     color: colors.blue,
     paddingBottom: 2,
     fontSize: 10,
+    textAlign: 'center',
+  },
+  text: {
+    color: 'grey',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

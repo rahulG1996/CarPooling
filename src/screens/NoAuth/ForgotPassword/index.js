@@ -39,9 +39,9 @@ function ForgotPassword(props) {
           <TouchableOpacity style={styles.otpBtn}>
             <Text style={styles.sendText}>Send OTP</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text style={styles.resendText}>Resend OTP</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <SectionHeader title="Enter OTP" />
         <CustomTextInput
@@ -54,11 +54,11 @@ function ForgotPassword(props) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={Styles.container}>
       <NoAuthHeader />
       <View style={{flex: 1}}>
         <CustomHeadingTabBar data={state.headingTabData} />
-        <KeyboardAwareScrollView contentContainerStyle={{margin: 20}}>
+        <KeyboardAwareScrollView>
           <View style={Styles.box}>
             {renderMobileLoginForm()}
             <CustomButton
