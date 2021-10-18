@@ -2,10 +2,12 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {colors} from '../../utils/colors';
 
-const CustomButton = ({title, onPress}) => {
+const CustomButton = ({title, onPress, defaulStyle}) => {
   return (
-    <TouchableOpacity style={styles.btn} onPress={onPress}>
-      <Text style={styles.btnText}>{title}</Text>
+    <TouchableOpacity style={[styles.btn, {...defaulStyle}]} onPress={onPress}>
+      <Text numberOfLines={1} style={styles.btnText}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
