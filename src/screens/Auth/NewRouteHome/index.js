@@ -92,7 +92,11 @@ const NewRouteHome = props => {
               </View>
               <View style={{width: '70%'}}>
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('PickupLocation')}
+                  onPress={() =>
+                    props.navigation.navigate('PickupLocation', {
+                      type: 'pickup',
+                    })
+                  }
                   style={{
                     height: 50,
                     borderBottomWidth: 1,
@@ -101,8 +105,13 @@ const NewRouteHome = props => {
                   <Text>Pickup Location</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={() =>
+                    props.navigation.navigate('PickupLocation', {
+                      type: 'destination',
+                    })
+                  }
                   style={{height: 60, justifyContent: 'center'}}>
-                  <Text>Pickup Location</Text>
+                  <Text>Destination Location</Text>
                 </TouchableOpacity>
               </View>
               <View style={{width: '15%', alignItems: 'center'}}>
