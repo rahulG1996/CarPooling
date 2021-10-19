@@ -53,10 +53,15 @@ function UpdatePassword(props) {
   return (
     <View style={Styles.container}>
       <NoAuthHeader />
-      <View style={{flex: 1}}>
-        <CustomHeadingTabBar data={state.headingTabData} />
-        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-          <View style={Styles.box}>
+      <View style={Styles.container}>
+        <CustomHeadingTabBar
+          data={state.headingTabData}
+          hnadleTabBar={() => {}}
+        />
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{flex: 1}}>
+          <View style={[Styles.box, {flex: 1}]}>
             {state.isPasswordUpdated ? (
               <>
                 <View
@@ -79,7 +84,7 @@ function UpdatePassword(props) {
                   </Text>
                 </View>
                 <CustomButton
-                  title="Done"
+                  title="Login"
                   onPress={() => {
                     setState({...state, isPasswordUpdated: false});
                     props.navigation.navigate('Login');

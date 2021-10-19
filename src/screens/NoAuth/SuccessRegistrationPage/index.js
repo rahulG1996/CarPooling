@@ -43,10 +43,12 @@ const SuccessRegistrationPage = props => {
             <View style={{paddingVertical: 20}}>
               <Image source={require('../../../assets/images/success.png')} />
             </View>
-            <Text style={styles.text}>Account has been created! </Text>
+            <Text style={[styles.text, {fontSize: 20, paddingBottom: 20}]}>
+              Account has been created !
+            </Text>
             <Text style={styles.text}>
               A confirmation link has been sent to your email id, pls click the
-              link to verify{' '}
+              link to verify
             </Text>
           </View>
           <CustomButton
@@ -66,5 +68,6 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontWeight: 'bold',
     textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });

@@ -57,7 +57,10 @@ function ForgotPassword(props) {
     <View style={Styles.container}>
       <NoAuthHeader />
       <View style={{flex: 1}}>
-        <CustomHeadingTabBar data={state.headingTabData} />
+        <CustomHeadingTabBar
+          data={state.headingTabData}
+          hnadleTabBar={() => {}}
+        />
         <KeyboardAwareScrollView>
           <View style={Styles.box}>
             {renderMobileLoginForm()}

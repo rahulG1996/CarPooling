@@ -301,7 +301,10 @@ function Login(props) {
               : renderSignupForm()}
             {state.activeTab === 'Log In' ? (
               <>
-                <CustomButton title="Log In" />
+                <CustomButton
+                  title="Log In"
+                  onPress={() => props.navigation.navigate('Home')}
+                />
                 <Text style={{textAlign: 'center', fontSize: 12}}>
                   or Login With
                 </Text>

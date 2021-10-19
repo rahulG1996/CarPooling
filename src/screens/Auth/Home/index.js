@@ -9,7 +9,7 @@ import {Styles} from '../../../utils/style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import MapView, {Marker} from 'react-native-maps';
 
-const Home = () => {
+const Home = props => {
   const [state, setState] = useState({
     headingTabData: [
       {title: 'Travel', isActive: true},
@@ -87,6 +87,7 @@ const Home = () => {
                           : 'TRusted Contacts'
                       }
                       defaulStyle={{borderRadius: 20}}
+                      onPress={() => props.navigation.navigate('NewRouteHome')}
                     />
                   </View>
                 );
