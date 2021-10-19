@@ -1,10 +1,40 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {AuthHeader, CustomButton} from '../../../components';
 import {Styles} from '../../../utils/style';
+import GetLocation from 'react-native-get-location';
 
-const NewRouteHome = () => {
+const NewRouteHome = props => {
+  const [state, setState] = useState({
+    currentLat: 37.78825,
+    currentLong: -122.4324,
+  });
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  const getCurrentLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 150000,
+    })
+      .then(location => {
+        console.warn(location);
+        setState({
+          ...state,
+          currentLat: Number(location.latitude),
+          currentLong: Number(location.longitude),
+        });
+      })
+      .catch(ex => {
+        console.warn(ex);
+        const {code, message} = ex;
+        // setState({...state, showMap: false}, () => {
+        //   alert('To track your direction , please click allow access');
+        // });
+      });
+  };
   return (
     <View style={Styles.container}>
       <AuthHeader title="Find a Ride" />
@@ -14,16 +44,16 @@ const NewRouteHome = () => {
             <MapView
               style={styles.mapStyle}
               initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
+                latitude: state.currentLat,
+                longitude: state.currentLong,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}>
               <Marker
                 draggable
                 coordinate={{
-                  latitude: 37.78825,
-                  longitude: -122.4324,
+                  latitude: state.currentLat,
+                  longitude: state.currentLong,
                 }}
                 title={'Test Marker'}
                 description={'This is a description of the marker'}
@@ -62,6 +92,7 @@ const NewRouteHome = () => {
               </View>
               <View style={{width: '70%'}}>
                 <TouchableOpacity
+                  onPress={() => props.navigation.navigate('PickupLocation')}
                   style={{
                     height: 50,
                     borderBottomWidth: 1,

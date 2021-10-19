@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {
   AuthHeader,
@@ -8,6 +8,7 @@ import {
 import {Styles} from '../../../utils/style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import MapView, {Marker} from 'react-native-maps';
+import GetLocation from 'react-native-get-location';
 
 const Home = props => {
   const [state, setState] = useState({
@@ -16,9 +17,36 @@ const Home = props => {
       {title: 'Track', isActive: false},
       {title: 'Message', isActive: false},
     ],
-
+    currentLat: 37.78825,
+    currentLong: -122.4324,
     activeTab: 'Travel',
   });
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  const getCurrentLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 150000,
+    })
+      .then(location => {
+        console.warn(location);
+        setState({
+          ...state,
+          currentLat: Number(location.latitude),
+          currentLong: Number(location.longitude),
+        });
+      })
+      .catch(ex => {
+        console.warn(ex);
+        const {code, message} = ex;
+        // setState({...state, showMap: false}, () => {
+        //   alert('To track your direction , please click allow access');
+        // });
+      });
+  };
 
   const hnadleTabBar = value => {
     let headingTabData = state.headingTabData.map(item => {
@@ -50,16 +78,16 @@ const Home = props => {
                 <MapView
                   style={styles.mapStyle}
                   initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: state.currentLat,
+                    longitude: state.currentLong,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}>
                   <Marker
                     draggable
                     coordinate={{
-                      latitude: 37.78825,
-                      longitude: -122.4324,
+                      latitude: state.currentLat,
+                      longitude: state.currentLong,
                     }}
                     title={'Test Marker'}
                     description={'This is a description of the marker'}

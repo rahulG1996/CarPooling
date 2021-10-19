@@ -6,7 +6,7 @@ import UpdatePassword from '../screens/NoAuth/UpdatePassword';
 import SuccessRegistrationPage from '../screens/NoAuth/SuccessRegistrationPage';
 import Home from '../screens/Auth/Home';
 import NewRouteHome from '../screens/Auth/NewRouteHome';
-
+import PickupLocation from '../screens/Auth/PickupLocation';
 const Stack = createNativeStackNavigator();
 
 function Route() {
@@ -25,6 +25,7 @@ function Route() {
       />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="NewRouteHome" component={NewRouteHome} />
+      <Stack.Screen name="PickupLocation" component={PickupLocation} />
     </Stack.Navigator>
   );
 }
