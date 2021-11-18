@@ -4,8 +4,14 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import MapView, {Marker} from 'react-native-maps';
 import {AuthHeader, CustomButton} from '../../../components';
 import {Styles} from '../../../utils/style';
+import {useDispatch} from 'react-redux';
+import {
+  getUserPickLocations,
+  getUserDestinationLocations,
+} from '../../../redux/action/locationData';
 
 const PickupLocation = props => {
+  const dispatch = useDispatch();
   var _mapView;
   const [state, setState] = useState({
     currentLat: 37.78825,
@@ -13,8 +19,33 @@ const PickupLocation = props => {
     type: props?.route?.params?.type,
   });
 
+  const handleAddress = () => {
+    if (state.type === 'pickup') {
+      dispatch(
+        getUserPickLocations({
+          pickupLat: state.currentLat,
+          pickupLong: state.currentLong,
+        }),
+      );
+      props.navigation.push('NewRouteHome', {
+        pickupLat: state.currentLat,
+        pickupLong: state.currentLong,
+      });
+    } else {
+      dispatch(
+        getUserDestinationLocations({
+          destinationLat: state.currentLat,
+          destinationLong: state.currentLong,
+        }),
+      );
+      props.navigation.push('NewRouteHome', {
+        destinationLat: state.currentLat,
+        destinationLong: state.currentLong,
+      });
+    }
+  };
+
   const selectedLocation = (data, details) => {
-    console.warn(details.geometry.location.lat, details.geometry.location.lng);
     setState({
       ...state,
       currentLat: Number(details.geometry.location.lat),
@@ -144,6 +175,7 @@ const PickupLocation = props => {
                 ? 'Confirm Pickup Location'
                 : 'Confirm Destination Location'
             }
+            onPress={handleAddress}
             defaulStyle={{borderRadius: 0, paddingVertical: 15}}
           />
         </View>
